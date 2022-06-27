@@ -159,7 +159,7 @@ function updateFormItemJsx(
 module.exports = (file, api, options) => {
   const j = api.jscodeshift;
   const root = j(file.source);
-  const antdPkgNames = parseStrToArray('antd');
+  const uiCompsPkgNames = parseStrToArray('@prism/ui-components');
 
   // import deprecated components from '@ant-design/compatible'
   function importDeprecatedComponent(j, root) {
@@ -170,30 +170,21 @@ module.exports = (file, api, options) => {
       .find(j.Identifier)
       .filter(
         path =>
+          parentNames.find(name => name == path.node.name) &&
           path.parent.node.type === 'ImportSpecifier' &&
-          antdPkgNames.includes(path.parent.parent.node.source.value),
+          uiCompsPkgNames.includes(path.parent.parent.node.source.value),
       )
       .forEach(path => {
         hasChanged = true;
         const importedComponentName = path.parent.node.imported.name;
-        const antdPkgName = path.parent.parent.node.source.value;
-
-        // remove old imports
-        const importDeclaration = path.parent.parent.node;
-        importDeclaration.specifiers = importDeclaration.specifiers.filter(
-          specifier =>
-            !specifier.imported ||
-            specifier.imported.name !== importedComponentName,
+        const [
+          parentCompName,
+          childCompName,
+          newCompName,
+        ] = deprecatedComponentNameMap.find(
+          names => names[0] == importedComponentName,
         );
-
-        // add new import from '@prism/ui-components'
-        const localComponentName = path.parent.node.local.name;
-        addSubmoduleImport(j, root, {
-          moduleName: '@prism/ui-components',
-          importedName: importedComponentName,
-          localName: localComponentName,
-          before: antdPkgName,
-        });
+        updateFormItemJsx(j, root, parentCompName, childCompName, newCompName);
       });
 
     return hasChanged;
@@ -205,7 +196,7 @@ module.exports = (file, api, options) => {
   hasChanged = importDeprecatedComponent(j, root) || hasChanged;
 
   if (hasChanged) {
-    antdPkgNames.forEach(antdPkgName => {
+    uiCompsPkgNames.forEach(antdPkgName => {
       removeEmptyModuleImport(j, root, antdPkgName);
     });
   }

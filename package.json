@@ -1,6 +1,6 @@
 {
   "name": "@convertlab/codemod",
-  "version": "1.1.2",
+  "version": "1.1.9",
   "description": "Codemod for ant convertlab upgrade",
   "bin": {
     "convertlab-codemod": "./bin/antd-codemod.js"

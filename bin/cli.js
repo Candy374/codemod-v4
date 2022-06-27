@@ -44,6 +44,8 @@ const transformers = [
   'v3-Component-to-compatible',
   'v3-LocaleProvider-to-v4-ConfigProvider',
   'v3-typings-to-compatible',
+  'antd-to-ui-components',
+  'update-ui-components',
 ];
 
 const dependencyProperties = [

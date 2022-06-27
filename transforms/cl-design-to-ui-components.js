@@ -30,6 +30,103 @@ module.exports = (file, api, options) => {
 
     return functionCalls.length > 0;
   }
+
+  function rewriteToCompatibleIcon(jsxElement) {
+    // rename name to `LegacyIcon`
+    jsxElement.openingElement.name.name = 'FormItem';
+    jsxElement.openingElement.name.type = 'JSXIdentifier';
+    if (jsxElement.closingElement) {
+      jsxElement.closingElement.name.name = 'FormItem';
+      jsxElement.closingElement.name.type = 'JSXIdentifier';
+    }
+  }
+
+  function updateFormItemJsx(j, root) {
+    let addImportFormItem = false;
+
+    // change <Form.Item  to <FormItem
+    root
+      .find(j.JSXElement)
+      .filter(
+        path =>
+          path.value?.openingElement?.name?.object?.name == 'Form' &&
+          path.value?.openingElement?.name?.property.name == 'Item',
+      )
+      .filter(path => {
+        rewriteToCompatibleIcon(path.node);
+        addImportFormItem = true;
+      });
+
+    // remove const FormItem = Form.Item
+    root
+      .find(j.VariableDeclaration)
+      .filter(path => {
+        if (path.value.declarations[0]) {
+          const { init } = path.value.declarations[0];
+          if (init?.object?.name === 'Form' && init.property.name === 'Item') {
+            return true;
+          }
+        }
+        return false;
+      })
+      .forEach(path => {
+        const localName = path.value.declarations[0].id.name;
+
+        if (localName !== 'FormItem') {
+          root
+            .find(j.JSXElement)
+            .filter(path => path.value?.openingElement?.name?.name == localName)
+            .filter(path => {
+              rewriteToCompatibleIcon(path.node);
+            });
+        }
+        addImportFormItem = true;
+      })
+      .replaceWith();
+
+    // remove const { Item } = Form
+    // change <Item to <FormItem
+    root
+      .find(j.VariableDeclaration)
+      .filter(path => {
+        if (path.value.declarations[0]) {
+          const { init, id } = path.value.declarations[0];
+          if (
+            init &&
+            init.name === 'Form' &&
+            id.properties.find(p => p.key?.name == 'Item')
+          ) {
+            return true;
+          }
+        }
+        return false;
+      })
+      .forEach(path => {
+        addImportFormItem = true;
+        const localName = path.value.declarations[0].id.properties.find(
+          p => p.key.name == 'Item',
+        ).value.name;
+
+        if (localName !== 'FormItem') {
+          root
+            .find(j.JSXElement)
+            .filter(path => path.value?.openingElement?.name?.name == localName)
+            .filter(path => {
+              rewriteToCompatibleIcon(path.node);
+            });
+        }
+      })
+      .replaceWith();
+
+    if (addImportFormItem) {
+      addSubmoduleImport(j, root, {
+        moduleName: '@prism/ui-components',
+        importedName: 'FormItem',
+        before: '@prism/ui-components',
+      });
+    }
+  }
+
   // import deprecated components from '@ant-design/compatible'
   function importDeprecatedComponent(j, root) {
     let hasChanged = false;
@@ -60,7 +157,7 @@ module.exports = (file, api, options) => {
             specifier.imported.name !== importedComponentName,
         );
 
-        // add new import from '@convertlab/uilib'
+        // add new import from '@prism/ui-components'
         const localComponentName = path.parent.node.local.name;
         addSubmoduleImport(j, root, {
           moduleName: '@prism/ui-components',
@@ -69,6 +166,8 @@ module.exports = (file, api, options) => {
           before: antdPkgName,
         });
       });
+
+    // updateFormItemJsx(j, root);
 
     return hasChanged;
   }
