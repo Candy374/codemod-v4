@@ -1,9 +1,9 @@
 {
-  "name": "@ant-design/codemod-v4",
-  "version": "1.1.0",
-  "description": "Codemod for ant design v4 upgrade",
+  "name": "@convertlab/codemod",
+  "version": "1.1.2",
+  "description": "Codemod for ant convertlab upgrade",
   "bin": {
-    "antd4-codemod": "./bin/antd-codemod.js"
+    "convertlab-codemod": "./bin/antd-codemod.js"
   },
   "files": [
     "bin",
@@ -14,13 +14,13 @@
     "codemod",
     "antd"
   ],
-  "homepage": "https://github.com/ant-design/codemod-v4",
+  "homepage": "https://github.com/convertlab/codemod-v4",
   "repository": {
     "type": "git",
-    "url": "git@github.com:ant-design/codemod-v4.git"
+    "url": "git@github.com:convertlab/codemod-v4.git"
   },
   "bugs": {
-    "url": "http://github.com/ant-design/codemod-v4/issues"
+    "url": "http://github.com/convertlab/codemod-v4/issues"
   },
   "license": "MIT",
   "engines": {
@@ -36,8 +36,7 @@
     "pretty-quick": "pretty-quick",
     "test": "jest"
   },
-  "dependencies": {
-    "@ant-design/icons": "^4.0.0-rc.0",
+  "dependencies": { 
     "chalk": "^3.0.0",
     "execa": "^3.4.0",
     "find-up": "^4.1.0",
