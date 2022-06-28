@@ -177,14 +177,21 @@ module.exports = (file, api, options) => {
       .forEach(path => {
         hasChanged = true;
         const importedComponentName = path.parent.node.imported.name;
-        const [
+        for (const [
           parentCompName,
           childCompName,
           newCompName,
-        ] = deprecatedComponentNameMap.find(
+        ] of deprecatedComponentNameMap.filter(
           names => names[0] == importedComponentName,
-        );
-        updateFormItemJsx(j, root, parentCompName, childCompName, newCompName);
+        )) {
+          updateFormItemJsx(
+            j,
+            root,
+            parentCompName,
+            childCompName,
+            newCompName,
+          );
+        }
       });
 
     return hasChanged;
