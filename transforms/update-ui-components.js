@@ -47,6 +47,7 @@ const deprecatedComponentNameMap = [
   ['Tag', 'CheckedTag', 'CheckedTag'],
   ['Card', 'Grid', 'CardGrid'],
   ['Form', 'Item', 'FormItem'],
+  ['Steps', 'Step', 'Step'],
 ];
 
 const parentNames = deprecatedComponentNameMap.map(names => names[0]);

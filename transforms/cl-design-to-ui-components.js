@@ -1,4 +1,4 @@
-// transform Form to ui-components
+// update import { Form } from 'cl-design' to import { Form } from ui-components
 
 const { printOptions } = require('./utils/config');
 const {
