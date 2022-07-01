@@ -46,6 +46,7 @@ const transformers = [
   // 'v3-typings-to-compatible',
 
   'remove-legacy-icon',
+  'update-template-icon',
 
   // 'antd-to-ui-components',
   // 'update-ui-components',
