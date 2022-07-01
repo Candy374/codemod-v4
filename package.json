@@ -36,7 +36,9 @@
     "pretty-quick": "pretty-quick",
     "test": "jest"
   },
-  "dependencies": { 
+  "dependencies": {
+    "@ant-design/icons": "^4.7.0",
+    "@convertlab/c-design-icons": "^0.14.0",
     "chalk": "^3.0.0",
     "execa": "^3.4.0",
     "find-up": "^4.1.0",

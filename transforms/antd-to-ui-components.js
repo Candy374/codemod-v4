@@ -23,6 +23,7 @@ module.exports = (file, api, options) => {
       .find(j.Identifier)
       .filter(
         path =>
+          path.node.name !== 'ConfigProvider' &&
           path.parent.node.type === 'ImportSpecifier' &&
           antdPkgNames.includes(path.parent.parent.node.source.value),
       )

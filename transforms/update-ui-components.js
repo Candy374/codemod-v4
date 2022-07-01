@@ -30,6 +30,7 @@ const { markDependency } = require('./utils/marker');
 const deprecatedComponentNameMap = [
   ['Tabs', 'TabPane', 'TabPane'],
   ['Menu', 'Item', 'MenuItem'],
+  ['Menu', 'SubMenu', 'SubMenu'],
   ['Select', 'Option', 'SelectOption'],
   ['Input', 'TextArea', 'TextArea'],
   ['Input', 'Group', 'InputGroup'],
@@ -40,6 +41,7 @@ const deprecatedComponentNameMap = [
   ['Dropdown', 'Button', 'DropdownButton'],
   ['Checkbox', 'Group', 'CheckboxGroup'],
   ['DatePicker', 'RangePicker', 'RangePicker'],
+  ['DatePicker', 'TimePicker', 'TimePicker'],
   ['Descriptions', 'Item', 'DescriptionsItem'],
   ['Upload', 'Dragger', 'UploadDragger'],
   ['Timeline', 'Item', 'TimelineItem'],
@@ -48,6 +50,12 @@ const deprecatedComponentNameMap = [
   ['Card', 'Grid', 'CardGrid'],
   ['Form', 'Item', 'FormItem'],
   ['Steps', 'Step', 'Step'],
+  ['Button', 'Group', 'ButtonGroup'],
+  ['Avatar', 'Group', 'AvatarGroup'],
+  ['Breadcrumb', 'Item', 'BreadcrumbItem'],
+  ['Breadcrumb', 'Separator', 'BreadcrumbSeparator'],
+  ['Tree', 'TreeNode', 'TreeNode'],
+  ['TreeSelect', 'TreeNode', 'TreeSelectNode'],
 ];
 
 const parentNames = deprecatedComponentNameMap.map(names => names[0]);
