@@ -106,34 +106,6 @@ module.exports = (file, api, options) => {
                 importedName: v4IconComponentName,
                 before,
               });
-            } else if (typeStr) {
-              hasChanged = true;
-              const iconJSXElement = createIconJSXElement(j, 'Icon');
-              const iconName = 'Icon32ContentIconBorder';
-              const node = iconJSXElement.openingElement;
-              node.attributes = [
-                j.jsxAttribute(
-                  j.jsxIdentifier('component'),
-                  j.jsxExpressionContainer(j.jsxIdentifier(iconName)),
-                ),
-                j.jsxAttribute(
-                  j.jsxIdentifier('alt'),
-                  j.jsxExpressionContainer(j.jsxIdentifier(typeStr)),
-                ),
-              ];
-
-              // we need a brace to wrap a jsxElement to pass Icon prop
-              path.parent.value.value = iconJSXElement;
-
-              addSubmoduleImport(j, root, {
-                moduleName: '@prism/ui-icons',
-                importedName: iconName,
-                before,
-              });
-
-              markDependency('@prism/ui-icons');
-
-              addImportFromAntIcon(j, root, { before });
             }
           });
       });
